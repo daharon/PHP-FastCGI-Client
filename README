@@ -47,7 +47,7 @@ require('fastcgi.php');
 
 $client = new FCGIClient('localhost', '9000');
 $content = 'key=value';
-echo $client->request(
+$client->request(
 	array(       
 		'GATEWAY_INTERFACE' => 'FastCGI/1.0',
 		'REQUEST_METHOD' => 'POST',
@@ -64,4 +64,4 @@ echo $client->request(
 	),
 	$content
 );
-
+echo $client->response();
