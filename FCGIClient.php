@@ -98,6 +98,13 @@ namespace framework {
         }
 
         /**
+         * Destructor
+         */
+        public function __destruct() {
+            socket_close($this->_sock);
+        }
+
+        /**
          * Define whether or not the FastCGI application should keep the connection
          * alive at the end of a request
          *
