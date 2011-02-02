@@ -9,7 +9,7 @@ $requests = array();
 // Perform 4 parrallel requests.
 for ($i = 0 ; $i < 4; $i++) {
 
-    $client = new \framework\FCGIClient('localhost', '9000');
+    $client = new \framework\FCGIClient('10.1.1.163', '9000');
 
     $client->request(
         array(
@@ -17,10 +17,10 @@ for ($i = 0 ; $i < 4; $i++) {
             'REQUEST_METHOD' => 'GET',
             'SCRIPT_FILENAME' => '/var/www/html/public/index.php',
             'SERVER_SOFTWARE' => 'php/fcgiclient',
-            'REMOTE_ADDR' => '127.0.0.1',
-            'REMOTE_PORT' => '9985',
-            'SERVER_ADDR' => '127.0.0.1',
-            'SERVER_PORT' => '80',
+            'REMOTE_ADDR' => '10.1.1.163',
+            'REMOTE_PORT' => '9000',
+            'SERVER_ADDR' => '10.1.1.187',
+            'SERVER_PORT' => '9000',
             'SERVER_NAME' => php_uname('n'),
             'SERVER_PROTOCOL' => 'HTTP/1.1'
         ),
@@ -32,7 +32,11 @@ for ($i = 0 ; $i < 4; $i++) {
 
 // Collect the responses from the previous requests.
 for ($i = 0; $i < 4; $i++) {
-    echo $requests[$i]->response();
+    $response = $requests[$i]->response();
+    
+    if (!empty($response)) {
+        echo print_r($response, true);
+    }
 }
 
 ?>
