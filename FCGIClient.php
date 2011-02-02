@@ -359,7 +359,7 @@ namespace framework {
         private static function formatResponse($response) {
 
             // Split the header from the body.  Split on \n\n.
-            $doubleCr = strpos($response, "\n\n");
+            $doubleCr = strpos($response, "\r\n\r\n");
             $rawHeader = substr($response, 0, $doubleCr);
             $rawBody = substr($response, $doubleCr, strlen($response));
 
