@@ -348,6 +348,39 @@ namespace framework {
         }
 
         /**
+         * FCGIClient::formatResponse()
+         * 
+         * Format the response into an array with separate headers and body.
+         *
+         * @param $response The plain, unformatted response.
+         *
+         * @return array An array containing the headers and body content.
+         */
+        private static function formatResponse($response) {
+
+            // Split the header from the body.  Split on \n\n.
+            $doubleCr = strpos($response, "\n\n");
+            $rawHeader = substr($response, 0, $doubleCr);
+            $rawBody = substr($response, $doubleCr, strlen($response));
+
+            // Format the header.
+            $header = array();
+            $headerLines = explode("\n", $rawHeader);
+
+            foreach ($headerLines as $line) {
+                if (preg_match('/([\w-]+):\s*(.*)$/', $line, $matches)) {
+                    // ['Content-type'] => 'text/plain'
+                    $header[$matches[1]] = $matches[2];
+                }
+            }
+
+            return array(
+                'headers' => $header,
+                'body'    => trim($rawBody)
+            );
+        }
+
+        /**
          * Collect the response from a FastCGI request.
          *
          * @return String Return response.
@@ -388,7 +421,7 @@ namespace framework {
                     throw new \Exception('Role value not known [UNKNOWN_ROLE]');
                     break;
                 case self::REQUEST_COMPLETE:
-                    return $response;
+                    return static::formatResponse($response);
             }
         }
     }
